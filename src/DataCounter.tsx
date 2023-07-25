@@ -6,22 +6,24 @@ interface CountState {
 }
 
 interface CountAction {
-  type: "inc" | "dec" | "setCount" | "setStep";
+  type: "inc" | "dec" | "setCount" | "setStep" | "reset";
   payload: number;
 }
 
 function reducer(state: CountState, action: CountAction) {
   switch (action.type) {
     case "inc":
-      return { ...state, count: state.count + action.payload };
+      return { ...state, count: state.count + state.step };
     case "dec":
-      return { ...state, count: state.count - action.payload };
+      return { ...state, count: state.count - state.step };
     case "setCount":
       return { ...state, count: action.payload };
     case "setStep":
       return { ...state, step: action.payload };
+    case "reset":
+      return { count: 0, step: 1 };
     default:
-      return state;
+      throw new Error("Unknown action");
   }
 }
 
@@ -38,8 +40,6 @@ function DateCounter() {
 
   const inc = function () {
     dispatch({ type: "inc", payload: step });
-    // setCount((count) => count + 1);
-    // setCount((count) => count + step);
   };
 
   const dec = function () {
@@ -55,9 +55,7 @@ function DateCounter() {
   };
 
   const reset = function () {
-    // setCount(0);
-    // dispatch({ type: "setCount", payload: 0 });
-    // setStep(1);
+    dispatch({ type: "reset", payload: 0 });
   };
 
   return (

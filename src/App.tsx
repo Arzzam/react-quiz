@@ -1,20 +1,37 @@
-import { useEffect, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import Header from "./components/Header/Header";
 import Main from "./components/Main/Main";
 
 const API_URL = process.env.REACT_APP_URL || "";
 
+const initialState = {
+  questions: [],
+  status: "Loading", //Loading, Success, Error, active, finished
+};
+
+const reducer = (state: any, action: any) => {
+  switch (action.type) {
+    case "DATA_FETCH_SUCCESS":
+      return {
+        ...state,
+        questions: action.payload,
+        status: "Success",
+      };
+    default:
+      throw new Error("Unknown action");
+  }
+};
+
 function App() {
-  const [questions, setQuestions] = useState([]) as any[];
-  const [error, setError] = useState(null) as any;
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   const fetchQuestions = async () => {
     try {
       const response = await fetch(API_URL);
       const data = await response.json();
-      setQuestions(data.results);
+      dispatch({ type: "DATA_FETCH_SUCCESS", payload: data });
     } catch (error) {
-      setError(error);
+      console.log(error);
     }
   };
 
@@ -25,7 +42,7 @@ function App() {
   return (
     <div className="flex justify-center flex-col items-center">
       <Header />
-      <Main data={questions} />
+      <Main data={[]} />
     </div>
   );
 }

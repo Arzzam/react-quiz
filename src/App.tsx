@@ -22,12 +22,12 @@ const reducer = (state: IState, action: ActionType): IState => {
       return {
         ...state,
         questions: action.payload,
-        status: EActionType.dataFetchSuccess,
+        status: EStatus.success,
       };
     case EActionType.dataFetchError:
       return {
         ...state,
-        status: EActionType.dataFetchError,
+        status: EStatus.error,
       };
     default:
       throw new Error("Unknown action");

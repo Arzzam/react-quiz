@@ -59,8 +59,8 @@ function DateCounter() {
   };
 
   return (
-    <div className="counter">
-      <div>
+    <div className="flex flex-col items-center gap-4 text-3xl font-bold m-24 font">
+      <div className="p-3">
         <input
           type="range"
           min="0"
@@ -71,15 +71,15 @@ function DateCounter() {
         <span>{step}</span>
       </div>
 
-      <div>
+      <div className="p-3">
         <button onClick={dec}>-</button>
         <input value={state.count} onChange={defineCount} />
         <button onClick={inc}>+</button>
       </div>
 
-      <p>{date.toDateString()}</p>
+      <p className="p-3">{date.toDateString()}</p>
 
-      <div>
+      <div className="p-3">
         <button onClick={reset}>Reset</button>
       </div>
     </div>

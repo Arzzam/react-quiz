@@ -14,6 +14,7 @@ const API_URL = process.env.REACT_APP_URL || "";
 const initialState = {
   questions: [] as IQuestions[],
   status: EStatus.loading, //Loading, Success, Error, active, finished
+  index: 0,
 } as IState;
 
 const reducer = (state: IState, action: ActionType): IState => {
@@ -29,6 +30,11 @@ const reducer = (state: IState, action: ActionType): IState => {
         ...state,
         status: EStatus.error,
       };
+    case EActionType.startQuiz:
+      return {
+        ...state,
+        status: EStatus.active,
+      };
     default:
       throw new Error("Unknown action");
   }
@@ -36,7 +42,7 @@ const reducer = (state: IState, action: ActionType): IState => {
 
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { questions, status } = state;
+  const { questions, status, index } = state;
 
   const fetchQuestions = async () => {
     try {
@@ -55,7 +61,12 @@ function App() {
   return (
     <div className="flex justify-center flex-col items-center">
       <Header />
-      <Main questions={questions} status={status} />
+      <Main
+        questions={questions}
+        status={status}
+        dispatch={dispatch}
+        index={index}
+      />
     </div>
   );
 }

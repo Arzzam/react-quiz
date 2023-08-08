@@ -1,17 +1,19 @@
-import { IState } from "../../types/types";
+import { EStatus, IState } from "../../types/types";
 import Loader from "../Loader/Loader";
 import Error from "../Error/Error";
 import Landing from "../Landing/Landing";
+import Questions from "../Questions/Questions";
 
-const Main = ({ questions, status }: IState) => {
+const Main = ({ questions, status, dispatch, index }: IState) => {
   const totalQuestions = questions.length;
   return (
     <main className="w-[50rem]">
-      {status === "Loading" && <Loader />}
-      {status === "Error" && <Error />}
-      <Landing totalQuestions={totalQuestions} />
-      {/* <p>Questions</p>
-      <p>1/15</p> */}
+      {status === EStatus.loading && <Loader />}
+      {status === EStatus.error && <Error />}
+      {status === EStatus.success && (
+        <Landing totalQuestions={totalQuestions} dispatch={dispatch} />
+      )}
+      {status === EStatus.active && <Questions questions={questions[index]} />}
     </main>
   );
 };

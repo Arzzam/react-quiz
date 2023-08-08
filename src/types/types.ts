@@ -1,3 +1,5 @@
+import { type } from "os";
+
 export interface IQuestions {
   question: string;
   options: string[];
@@ -7,7 +9,14 @@ export interface IQuestions {
 
 export interface IState {
   questions: IQuestions[];
-  status: string;
+  status?: string;
+  dispatch?: React.Dispatch<IDispatch>;
+  index?: number;
+}
+
+export interface IDispatch {
+  type: EActionType;
+  payload?: any;
 }
 
 export enum EStatus {
@@ -21,6 +30,7 @@ export enum EStatus {
 export enum EActionType {
   dataFetchSuccess = "DATA_FETCH_SUCCESS",
   dataFetchError = "DATA_FETCH_ERROR",
+  startQuiz = "START_QUIZ",
 }
 
 export type ActionType = {

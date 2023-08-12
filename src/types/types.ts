@@ -1,5 +1,3 @@
-import { type } from "os";
-
 export interface IQuestions {
   question: string;
   options: string[];
@@ -10,8 +8,8 @@ export interface IQuestions {
 export interface IState {
   questions: IQuestions[];
   status?: string;
-  dispatch?: React.Dispatch<IDispatch>;
-  index?: number;
+  dispatch?: React.Dispatch<IDispatch> | any;
+  index?: number | any;
 }
 
 export interface IDispatch {

@@ -4,7 +4,13 @@ import Error from "../Error/Error";
 import Landing from "../Landing/Landing";
 import Questions from "../Questions/Questions";
 
-const Main = ({ questions, status, dispatch, index }: IState) => {
+const Main = ({
+  questions,
+  status,
+  dispatch,
+  index,
+  clickedAnswer,
+}: IState) => {
   const totalQuestions = questions.length;
   return (
     <main className="w-[50rem]">
@@ -13,7 +19,13 @@ const Main = ({ questions, status, dispatch, index }: IState) => {
       {status === EStatus.success && (
         <Landing totalQuestions={totalQuestions} dispatch={dispatch} />
       )}
-      {status === EStatus.active && <Questions questions={questions[index]} />}
+      {status === EStatus.active && (
+        <Questions
+          questions={questions[index]}
+          clickedAnswer={clickedAnswer}
+          dispatch={dispatch}
+        />
+      )}
     </main>
   );
 };

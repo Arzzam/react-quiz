@@ -15,6 +15,7 @@ const initialState = {
   questions: [] as IQuestions[],
   status: EStatus.loading, //Loading, Success, Error, active, finished
   index: 0,
+  clickedAnswer: null,
 } as IState;
 
 const reducer = (state: IState, action: ActionType): IState => {
@@ -35,6 +36,11 @@ const reducer = (state: IState, action: ActionType): IState => {
         ...state,
         status: EStatus.active,
       };
+    case EActionType.answerQuestion:
+      return {
+        ...state,
+        clickedAnswer: action.payload,
+      };
     default:
       throw new Error("Unknown action");
   }
@@ -42,7 +48,7 @@ const reducer = (state: IState, action: ActionType): IState => {
 
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { questions, status, index } = state;
+  const { questions, status, index, clickedAnswer: clickAnswer } = state;
 
   const fetchQuestions = async () => {
     try {
@@ -66,6 +72,7 @@ function App() {
         status={status}
         dispatch={dispatch}
         index={index}
+        clickedAnswer={clickAnswer}
       />
     </div>
   );

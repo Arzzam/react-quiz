@@ -1,3 +1,4 @@
+export const SEC_PER_QUESTION = 30;
 export interface IQuestions {
   question: string;
   options: string[];
@@ -14,6 +15,7 @@ export interface IState {
   points: number;
   totalPoints: number;
   highScore: number;
+  timeRemaining: number | null;
 }
 
 export interface IDispatch {
@@ -43,6 +45,7 @@ export enum EActionType {
   nextQuestion = "NEXT_QUESTION",
   finishQuiz = "FINISH_QUIZ",
   resetQuiz = "RESET_QUIZ",
+  timer = "TIMER",
 }
 
 export type ActionType = {

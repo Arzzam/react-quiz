@@ -7,6 +7,7 @@ import {
   EStatus,
   IQuestions,
   IState,
+  SEC_PER_QUESTION,
 } from "./types/types";
 
 const API_URL = process.env.REACT_APP_URL || "";
@@ -19,6 +20,7 @@ const initialState = {
   points: 0,
   totalPoints: 0,
   highScore: 0,
+  timeRemaining: null,
 } as IState;
 
 const reducer = (state: IState, action: ActionType): IState => {
@@ -29,6 +31,7 @@ const reducer = (state: IState, action: ActionType): IState => {
         questions: action.payload.data,
         status: EStatus.success,
         totalPoints: action.payload.totalPoints,
+        timeRemaining: action.payload.data.length * SEC_PER_QUESTION,
       };
     case EActionType.dataFetchError:
       return {
@@ -72,6 +75,12 @@ const reducer = (state: IState, action: ActionType): IState => {
         clickedAnswer: null,
         points: 0,
       };
+    case EActionType.timer:
+      return {
+        ...state,
+        timeRemaining: Number(state.timeRemaining) - 1,
+        status: state.timeRemaining === 0 ? EStatus.finished : state.status,
+      };
     default:
       throw new Error("Unknown action");
   }
@@ -87,6 +96,7 @@ function App() {
     points,
     totalPoints,
     highScore,
+    timeRemaining,
   } = state;
 
   const fetchQuestions = async () => {
@@ -122,6 +132,7 @@ function App() {
         points={points}
         totalPoints={totalPoints}
         highScore={highScore}
+        timeRemaining={timeRemaining}
       />
     </div>
   );

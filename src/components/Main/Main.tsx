@@ -6,6 +6,8 @@ import Questions from "../Questions/Questions";
 import NextButton from "../Button/NextButton";
 import Progress from "../Progress/Progress";
 import FinishedScreen from "../Finished/FinishedScreen";
+import Footer from "../Footer/Footer";
+import Timer from "../Timer/Timer";
 
 const Main = ({
   questions,
@@ -16,6 +18,7 @@ const Main = ({
   points,
   totalPoints,
   highScore,
+  timeRemaining,
 }: IState) => {
   const totalQuestions = questions.length;
   return (
@@ -39,12 +42,15 @@ const Main = ({
             clickedAnswer={clickedAnswer}
             dispatch={dispatch}
           />
-          <NextButton
-            clickedAnswer={clickedAnswer}
-            dispatch={dispatch}
-            totalQuestions={totalQuestions}
-            index={index}
-          />
+          <Footer>
+            <Timer dispatch={dispatch} timeRemaining={timeRemaining} />
+            <NextButton
+              clickedAnswer={clickedAnswer}
+              dispatch={dispatch}
+              totalQuestions={totalQuestions}
+              index={index}
+            />
+          </Footer>
         </>
       )}
 

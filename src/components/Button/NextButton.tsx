@@ -2,7 +2,12 @@ import { EActionType } from "../../types/types";
 import Button from "./Button";
 import { INextButtonProps } from "./buttonTypes";
 
-const NextButton = ({ dispatch, clickedAnswer }: INextButtonProps) => {
+const NextButton = ({
+  dispatch,
+  clickedAnswer,
+  index,
+  totalQuestions,
+}: INextButtonProps) => {
   if (clickedAnswer === null) {
     return null;
   }
@@ -10,13 +15,17 @@ const NextButton = ({ dispatch, clickedAnswer }: INextButtonProps) => {
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ): void {
     event.preventDefault();
+    if (index === totalQuestions - 1) {
+      dispatch({ type: EActionType.finishQuiz });
+      return;
+    }
     dispatch({ type: EActionType.nextQuestion });
   }
 
   return (
     <>
       <Button className="float-right" onClick={handleNextQuestion}>
-        Next
+        {index === totalQuestions - 1 ? "Finish" : "Next"}
       </Button>
     </>
   );

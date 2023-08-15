@@ -15,4 +15,6 @@ export interface IStyledButtonProps extends IButtonProps {
 export interface INextButtonProps extends IButtonProps {
   dispatch: React.Dispatch<IDispatch>;
   clickedAnswer: number | null;
+  index: number;
+  totalQuestions: number;
 }

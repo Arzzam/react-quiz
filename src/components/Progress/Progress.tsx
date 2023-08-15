@@ -21,7 +21,7 @@ const Progress = ({
         value={index + Number(clickAnswer !== null)}
       />
       <p className="text-left">
-        Question <strong>{index}</strong>/ {questionLength}
+        Question <strong>{index + 1}</strong>/ {questionLength}
       </p>
       <p className="text-right">
         <strong>{points}</strong> / {totalPoints} Points

@@ -13,6 +13,7 @@ export interface IState {
   clickedAnswer: number | null;
   points: number;
   totalPoints: number;
+  highScore: number;
 }
 
 export interface IDispatch {
@@ -40,6 +41,8 @@ export enum EActionType {
   startQuiz = "START_QUIZ",
   answerQuestion = "ANSWER_QUESTION",
   nextQuestion = "NEXT_QUESTION",
+  finishQuiz = "FINISH_QUIZ",
+  resetQuiz = "RESET_QUIZ",
 }
 
 export type ActionType = {

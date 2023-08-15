@@ -5,6 +5,7 @@ import Landing from "../Landing/Landing";
 import Questions from "../Questions/Questions";
 import NextButton from "../Button/NextButton";
 import Progress from "../Progress/Progress";
+import FinishedScreen from "../Finished/FinishedScreen";
 
 const Main = ({
   questions,
@@ -14,6 +15,7 @@ const Main = ({
   clickedAnswer,
   points,
   totalPoints,
+  highScore,
 }: IState) => {
   const totalQuestions = questions.length;
   return (
@@ -37,8 +39,22 @@ const Main = ({
             clickedAnswer={clickedAnswer}
             dispatch={dispatch}
           />
-          <NextButton clickedAnswer={clickedAnswer} dispatch={dispatch} />
+          <NextButton
+            clickedAnswer={clickedAnswer}
+            dispatch={dispatch}
+            totalQuestions={totalQuestions}
+            index={index}
+          />
         </>
+      )}
+
+      {status === EStatus.finished && (
+        <FinishedScreen
+          totalPoints={totalPoints}
+          points={points}
+          highScore={highScore}
+          dispatch={dispatch}
+        />
       )}
     </main>
   );

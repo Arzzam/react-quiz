@@ -18,6 +18,7 @@ const initialState = {
   clickedAnswer: null,
   points: 0,
   totalPoints: 0,
+  highScore: 0,
 } as IState;
 
 const reducer = (state: IState, action: ActionType): IState => {
@@ -57,6 +58,20 @@ const reducer = (state: IState, action: ActionType): IState => {
         index: nextIndex,
         clickedAnswer: null,
       };
+    case EActionType.finishQuiz:
+      return {
+        ...state,
+        status: EStatus.finished,
+        highScore: Math.max(state.highScore, state.points),
+      };
+    case EActionType.resetQuiz:
+      return {
+        ...state,
+        status: EStatus.active,
+        index: 0,
+        clickedAnswer: null,
+        points: 0,
+      };
     default:
       throw new Error("Unknown action");
   }
@@ -71,6 +86,7 @@ function App() {
     clickedAnswer: clickAnswer,
     points,
     totalPoints,
+    highScore,
   } = state;
 
   const fetchQuestions = async () => {
@@ -105,6 +121,7 @@ function App() {
         clickedAnswer={clickAnswer}
         points={points}
         totalPoints={totalPoints}
+        highScore={highScore}
       />
     </div>
   );

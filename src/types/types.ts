@@ -11,6 +11,8 @@ export interface IState {
   dispatch: React.Dispatch<IDispatch>;
   index: number;
   clickedAnswer: number | null;
+  points: number;
+  totalPoints: number;
 }
 
 export interface IDispatch {

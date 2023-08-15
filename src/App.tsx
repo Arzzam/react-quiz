@@ -16,6 +16,8 @@ const initialState = {
   status: EStatus.loading, //Loading, Success, Error, active, finished
   index: 0,
   clickedAnswer: null,
+  points: 0,
+  totalPoints: 0,
 } as IState;
 
 const reducer = (state: IState, action: ActionType): IState => {
@@ -23,8 +25,9 @@ const reducer = (state: IState, action: ActionType): IState => {
     case EActionType.dataFetchSuccess:
       return {
         ...state,
-        questions: action.payload,
+        questions: action.payload.data,
         status: EStatus.success,
+        totalPoints: action.payload.totalPoints,
       };
     case EActionType.dataFetchError:
       return {
@@ -37,9 +40,22 @@ const reducer = (state: IState, action: ActionType): IState => {
         status: EStatus.active,
       };
     case EActionType.answerQuestion:
+      const currentQuestion = state.questions[state.index];
+      const isCorrect = action.payload === currentQuestion.correctOption;
+      const updatedPoints = isCorrect
+        ? state.points + currentQuestion.points
+        : state.points;
       return {
         ...state,
         clickedAnswer: action.payload,
+        points: updatedPoints,
+      };
+    case EActionType.nextQuestion:
+      const nextIndex = state.index + 1;
+      return {
+        ...state,
+        index: nextIndex,
+        clickedAnswer: null,
       };
     default:
       throw new Error("Unknown action");
@@ -48,13 +64,27 @@ const reducer = (state: IState, action: ActionType): IState => {
 
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { questions, status, index, clickedAnswer: clickAnswer } = state;
+  const {
+    questions,
+    status,
+    index,
+    clickedAnswer: clickAnswer,
+    points,
+    totalPoints,
+  } = state;
 
   const fetchQuestions = async () => {
     try {
       const response = await fetch(API_URL);
       const data = await response.json();
-      dispatch({ type: EActionType.dataFetchSuccess, payload: data });
+      const totalPoints = data.reduce(
+        (acc: number, question: IQuestions) => acc + question.points,
+        0
+      );
+      dispatch({
+        type: EActionType.dataFetchSuccess,
+        payload: { data, totalPoints },
+      });
     } catch (error) {
       dispatch({ type: EActionType.dataFetchError });
     }
@@ -73,6 +103,8 @@ function App() {
         dispatch={dispatch}
         index={index}
         clickedAnswer={clickAnswer}
+        points={points}
+        totalPoints={totalPoints}
       />
     </div>
   );

@@ -2,18 +2,13 @@ import Button from "../Button/Button";
 import { EActionType, IQuestionsProps } from "../../types/types";
 
 const Options = ({ questions, clickedAnswer, dispatch }: IQuestionsProps) => {
-  const correctClass =
-    "bg-color-theme border-2 border-color-theme text-color-light";
-  const wrongClass =
-    "bg-color-accent border-2 border-color-accent text-color-darkest";
+  const hasAnswered = clickedAnswer !== null;
   function handleCheckAnswer(
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     idx: number
   ): void {
     event.preventDefault();
     dispatch({ type: EActionType.answerQuestion, payload: idx });
-    console.log(idx);
-    console.log(questions.correctOption);
   }
 
   return (
@@ -21,9 +16,12 @@ const Options = ({ questions, clickedAnswer, dispatch }: IQuestionsProps) => {
       {questions.options.map((option, idx) => (
         <Button
           key={option}
-          className={`btn-option ${
+          className={`w-full text-left btn-option ${
             idx === clickedAnswer ? "translate-x-8" : ""
-          } ${idx === questions.correctOption ? correctClass : wrongClass}`}
+          }`}
+          correct={hasAnswered && idx === questions.correctOption}
+          wrong={hasAnswered && idx !== questions.correctOption}
+          disabled={hasAnswered}
           onClick={(event) => handleCheckAnswer(event, idx)}
         >
           {option}
